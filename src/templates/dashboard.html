@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+    <!-- Este H1 é o que o script do Selenium pode validar -->
+    <h1>Bem-vindo!</h1>
+    
+    <h2>Lista de Produtos (do Banco de Dados):</h2>
+    <ul>
+        <!-- 
+          O Flask (Jinja2) irá renderizar a lista de produtos aqui.
+          O formato do 'product' é (id, name, price).
+        -->
+        {% for product in products %}
+            <li>{{ product[1] }} - R$ {{ "%.2f"|format(product[2]) }}</li>
+        {% else %}
+            <li>Nenhum produto encontrado no banco de dados.</li>
+        {% endfor %}
+    </ul>
+    
+    <p><a href="/">Voltar ao Login</a></p>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h1>Página de Login</h1>
+    
+    <!-- 
+      Este formulário envia os dados para a rota '/login' via POST.
+      Os IDs dos inputs e do botão são alvos fáceis para o Selenium.
+    -->
+    <form action="/login" method="POST">
+        <div>
+            <!-- Label e Input para Email -->
+            <label for="user-email">Email:</label>
+            <input type="email" id="user-email" name="email" required>
+        </div>
+        <br>
+        <div>
+            <!-- Label e Input para Senha -->
+            <label for="user-password">Senha:</label>
+            <input type="password" id="user-password" name="password" required>
+        </div>
+        <br>
+        <div>
+            <!-- Botão de Login (Alvo do Selenium) -->
+            <button type="submit" id="btn_entrar">Entrar</button>
+        </div>
+    </form>
+</body>
+</html>
