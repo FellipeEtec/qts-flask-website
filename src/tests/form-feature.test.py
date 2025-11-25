@@ -28,7 +28,7 @@ try:
     time.sleep(2) # Espera a página carregar (má prática, mas visual)
 
     # 3. Validação (Assert)
-    welcome_message = driver.find_element(By.ID, "resultado").text
+    welcome_message = driver.find_element(By.TAG_NAME, "h1").text
     assert "Bem-vindo" in welcome_message
     print("Teste de Login: SUCESSO")
 

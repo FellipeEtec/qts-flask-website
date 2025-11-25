@@ -47,9 +47,9 @@ def init_db():
         # Limpa usuários antigos e insere dados de exemplo
         cursor.execute("DELETE FROM users")
         sample_users = [
-            ('aluno@teste.com', 'senha123')
+            (1, 'aluno@teste.com', 'senha123')
         ]
-        cursor.executemany("INSERT INTO users (email, password) VALUES (?, ?)", sample_users)
+        cursor.executemany("INSERT INTO users (id, email, password) VALUES (?, ?, ?)", sample_users)
         
         # Limpa produtos antigos e insere dados de exemplo
         cursor.execute("DELETE FROM products")
@@ -72,10 +72,9 @@ def index():
     return render_template('index.html')
 
 @app.route('/dashboard', methods=['POST'])
-def login():
+def dashboard():
     """
     Processa o formulário de login.
-    Para este teste, apenas validamos se os campos não estão vazios.
     """
     name = request.form.get('name')
     email = request.form.get('email')
@@ -87,6 +86,7 @@ def login():
 
     cursor.execute(f"SELECT * FROM users WHERE email='{email}' AND password='{password}'")
     users = cursor.fetchall()
+    print(users)
     
     if len(users) > 0:
         # Se o login for "bem-sucedido", busca os produtos
@@ -94,10 +94,23 @@ def login():
         products = cursor.fetchall()
         
         # Retorna a página do dashboard com os produtos
-        return render_template('dashboard.html', products=products, name=name)
+        return render_template('dashboard.html', products=products, name=name, userid=users[0][0])
     else:
         # Se falhar (campos vazios)
         return "Falha no login: campos obrigatórios não preenchidos.", 400
+
+@app.route('/profile/<userid>')
+def profile(userid):
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute(f"SELECT * FROM users WHERE id={userid}")
+    user = cursor.fetchone()
+
+    if user is not None:
+        return render_template('profile.html', user=user)
+    else:
+        return "Nenhum usuário foi achado com esse ID"
 
 # --- Rota da API (Alvo do JMeter) ---
 

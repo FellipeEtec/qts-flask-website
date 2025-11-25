@@ -8,7 +8,7 @@
 <body>
     <!-- Este H1 é o que o script do Selenium pode validar -->
     <!-- Usar o filtro " | safe" em um variável faz ela não escapar (sujeito a hacking) -->
-    <h1 id="resultado">Bem-vindo {{ name | safe }}!</h1>
+    <h1>Bem-vindo {{ name | safe }}!</h1>
     
     <h2>Lista de Produtos (do Banco de Dados):</h2>
     <ul>
@@ -23,6 +23,7 @@
         {% endfor %}
     </ul>
     
+    <p><a href="/profile/{{userid}}">Ir à página de perfil</a></p>
     <p><a href="/">Voltar ao Login</a></p>
 </body>
 </html>

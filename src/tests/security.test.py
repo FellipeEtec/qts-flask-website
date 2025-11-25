@@ -10,34 +10,50 @@ import time
 
 WEBSITE_URL = "http://127.0.0.1:5000"
 
+#
+
+def test1_handler(driver):
+    if handle_javascript_alert(driver):
+        print("❌ - Teste de XSS")
+    else:
+        print("✅ - Teste de XSS")
+
+
+def test2_handler(driver):
+    try:
+        resultado = driver.find_element(By.TAG_NAME, "h1")
+    except:
+        print("✅ - Teste de SQLi")
+        return
+    
+    welcome_message = resultado.text
+    if "Bem-vindo" in welcome_message:
+        print("❌ - Teste de SQLi")
+    else:
+        print("✅ - Teste de SQLi")
+
+
 TEST_FORM_DATA = [
-    # Test 1
+    # Test 1 - XSS
     {
         "name": "<script>alert('hackeado')</script>",
         "email": "aluno@teste.com",
         "password": "senha123",
-        "handler": lambda: handle_javascript_alert()
+        "handler": test1_handler
     },
     
-    # # Test 2
-    # {
-    #     "name": "",
-    #     "email": "",
-    #     "password": "",
-    #     "handler": lambda x: print()
-    # },
-    
-    # # Test 3
-    # {
-    #     "name": "",
-    #     "email": "",
-    #     "password": "",
-    #     "handler": lambda x: print()
-    # }
+    # Test 2 - SQLi
+    {
+        "name": "Fellipe",
+        "email": "' OR 1=1; --",
+        "password": "1234",
+        "handler": test2_handler
+    }
 ]
 
+#
 
-def handle_javascript_alert(driver, timeout=10):
+def handle_javascript_alert(driver, timeout=1):
     try:
         wait = WebDriverWait(driver, timeout)
         alert = wait.until(EC.alert_is_present())
@@ -70,27 +86,34 @@ def test_form(driver, name_input, email_input, password_input, handle_validation
 
     time.sleep(2)
 
-    return handle_validation()
+    handle_validation(driver)
 
 
 def main():
     driver = get_driver()
 
     try:
+        # Teste 1 e 2 - XSS (Cross Site Script) e SQLi (SQL Injection)
         for data in TEST_FORM_DATA:
-            error = test_form(
+            test_form(
                 driver, 
                 data["name"], 
                 data["email"], 
                 data["password"], 
                 data["handler"]
             )
+        
+        # Teste 3 - IDOR (Insecure Direct Object References)
 
-            if error:
-                raise Exception(error)
+        driver.get(f'{WEBSITE_URL}/profile/1')
+        profile_info_h1 = driver.find_element(By.TAG_NAME, "h1")
+        if "Suas informações" in profile_info_h1.text:
+            print("❌ - Teste de IDOR")
+        else:
+            print("✅ - Teste de IDOR")
 
     except Exception as e:
-        print(f"Teste de Login: FALHA - {e}")
+        print(e)
 
     finally:
         # 4. Fechamento
