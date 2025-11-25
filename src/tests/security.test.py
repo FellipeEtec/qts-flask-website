@@ -104,12 +104,14 @@ def main():
             )
         
         # Teste 3 - IDOR (Insecure Direct Object References)
-
         driver.get(f'{WEBSITE_URL}/profile/1')
-        profile_info_h1 = driver.find_element(By.TAG_NAME, "h1")
-        if "Suas informações" in profile_info_h1.text:
+        
+        time.sleep(2)
+
+        try:
+            driver.find_element(By.TAG_NAME, "h1")
             print("❌ - Teste de IDOR")
-        else:
+        except:
             print("✅ - Teste de IDOR")
 
     except Exception as e:
