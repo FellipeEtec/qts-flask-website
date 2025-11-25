@@ -7,7 +7,8 @@
 </head>
 <body>
     <!-- Este H1 é o que o script do Selenium pode validar -->
-    <h1 id="resultado">Bem-vindo!</h1>
+    <!-- Usar o filtro " | safe" em um variável faz ela não escapar (sujeito a hacking) -->
+    <h1 id="resultado">Bem-vindo {{ name | safe }}!</h1>
     
     <h2>Lista de Produtos (do Banco de Dados):</h2>
     <ul>

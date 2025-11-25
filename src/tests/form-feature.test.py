@@ -14,11 +14,13 @@ try:
     driver.get("http://127.0.0.1:5000") # Site fictício
 
     # Encontra elementos (Locators)
+    name_field = driver.find_element(By.ID, "user-name")
     email_field = driver.find_element(By.ID, "user-email")
     pass_field = driver.find_element(By.ID, "user-password")
     login_button = driver.find_element(By.XPATH, "//button[text()='Entrar']")
 
     # Executa ações
+    name_field.send_keys("Fellipe")
     email_field.send_keys("aluno@teste.com")
     pass_field.send_keys("senha123")
     login_button.click()

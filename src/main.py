@@ -71,33 +71,33 @@ def index():
     """Serve a página de login (index.html)."""
     return render_template('index.html')
 
-@app.route('/login', methods=['POST'])
+@app.route('/dashboard', methods=['POST'])
 def login():
     """
     Processa o formulário de login.
     Para este teste, apenas validamos se os campos não estão vazios.
     """
+    name = request.form.get('name')
     email = request.form.get('email')
     password = request.form.get('password')
 
     # Validação simples (suficiente para o teste do Selenium)
-    if email and password:
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute(f"SELECT * FROM users WHERE email='{email}' AND password='{password}'")
+    users = cursor.fetchall()
+    
+    if len(users) > 0:
         # Se o login for "bem-sucedido", busca os produtos
-        db = get_db()
-        cursor = db.cursor()
         cursor.execute("SELECT * FROM products")
         products = cursor.fetchall()
         
         # Retorna a página do dashboard com os produtos
-        return render_template('dashboard.html', products=products)
+        return render_template('dashboard.html', products=products, name=name)
     else:
         # Se falhar (campos vazios)
         return "Falha no login: campos obrigatórios não preenchidos.", 400
-
-@app.route('/dashboard')
-def dashboard_get():
-    """Rota de fallback caso alguém acesse /dashboard via GET (redireciona para o login)"""
-    return "Por favor, faça o login primeiro.", 401
 
 # --- Rota da API (Alvo do JMeter) ---
 

@@ -9,10 +9,16 @@
     <h1>Página de Login</h1>
     
     <!-- 
-      Este formulário envia os dados para a rota '/login' via POST.
+      Este formulário envia os dados para a rota '/dashboard' via POST.
       Os IDs dos inputs e do botão são alvos fáceis para o Selenium.
     -->
-    <form action="/login" method="POST">
+    <form action="/dashboard" method="POST">
+        <div>
+            <!-- Label e Input para Nome -->
+            <label for="user-name">Nome:</label>
+            <input type="text" id="user-name" name="name" required>
+        </div>
+        <br>
         <div>
             <!-- Label e Input para Email -->
             <label for="user-email">Email:</label>
